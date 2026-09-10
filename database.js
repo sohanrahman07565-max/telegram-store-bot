@@ -63,3 +63,69 @@ export function isBanned(userId) {
 }
 
 export default db;
+
+
+// Auto create required tables if they don't exist
+rawDb.run(`
+  CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY,
+    first_name TEXT,
+    username TEXT,
+    balance REAL DEFAULT 0,
+    role TEXT DEFAULT 'user',
+    banned INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS admins (
+    user_id INTEGER PRIMARY KEY,
+    role TEXT DEFAULT 'admin'
+  );
+
+  CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    price REAL,
+    duration TEXT,
+    status TEXT DEFAULT 'on'
+  );
+
+  CREATE TABLE IF NOT EXISTS keys (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_name TEXT,
+    duration TEXT,
+    key_value TEXT UNIQUE,
+    status TEXT DEFAULT 'unused'
+  );
+
+  CREATE TABLE IF NOT EXISTS payments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    amount REAL,
+    method TEXT,
+    trx_id TEXT,
+    status TEXT DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS payment_methods (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    number TEXT,
+    status TEXT DEFAULT 'on'
+  );
+
+  CREATE TABLE IF NOT EXISTS redeem_codes (
+    code TEXT PRIMARY KEY,
+    amount REAL,
+    max_uses INTEGER DEFAULT 1,
+    used_count INTEGER DEFAULT 0,
+    expiry DATETIME
+  );
+
+  CREATE TABLE IF NOT EXISTS settings (
+    key TEXT PRIMARY KEY,
+    value TEXT
+  );
+`);
+persist();
