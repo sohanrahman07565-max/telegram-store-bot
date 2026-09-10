@@ -243,19 +243,13 @@ http.createServer((req, res) => {
 // -------------------------------------------------------------
 console.log(`🤖 ${BOT_NAME} Started Successfully in Node.js`);
 
-async function launchBot() {
-  try {
-    await bot.launch({
-      dropPendingUpdates: true,
-    });
-  } catch (err) {
-    console.error('❌ Bot crashed:', err.message);
-    console.log('🔄 Restarting in 10 seconds...');
-    setTimeout(launchBot, 10000);
-  }
-}
-
-launchBot();
+// ক্লিন লঞ্চ (নো লুপ রিস্টার্ট)
+bot.launch({ dropPendingUpdates: true })
+  .then(() => console.log('🤖 Bot launched successfully!'))
+  .catch((err) => {
+    console.error('❌ Bot launch failed:', err.message);
+    process.exit(1);
+  });
 
 // সেফ শাটডাউন
 process.once('SIGINT', () => bot.stop('SIGINT'));
