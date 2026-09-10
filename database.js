@@ -141,6 +141,7 @@ rawDb.run(`
     role TEXT DEFAULT 'user',
     banned INTEGER DEFAULT 0,
     join_date TEXT,
+    ref_by INTEGER DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 `);
