@@ -129,3 +129,18 @@ rawDb.run(`
   );
 `);
 persist();
+
+rawDb.run(`
+  DROP TABLE IF EXISTS users;
+  CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    first_name TEXT,
+    username TEXT,
+    balance REAL DEFAULT 0,
+    role TEXT DEFAULT 'user',
+    banned INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+persist();
