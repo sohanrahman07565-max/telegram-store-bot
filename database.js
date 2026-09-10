@@ -140,6 +140,7 @@ rawDb.run(`
     balance REAL DEFAULT 0,
     role TEXT DEFAULT 'user',
     banned INTEGER DEFAULT 0,
+    join_date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 `);
